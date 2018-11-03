@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>MOBILE PHONE</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="phone.css">
+</head>
+
+<body onload="ctime()">
+	<div id="phone">
+		<div id="head">
+			<div id="chead"></div>
+			<div id="rhead"></div>
+			<div id="chead"></div>
+		</div>
+		<div id="screen">
+			<div id="topbar">
+<!-- 				<div id="notification"></div> -->
+				<div id="timep1"></div>
+				<!-- <div id="status">
+					
+					<div><img src="wifi.png"></div>
+					<div><img src="signal.png"></div>
+					<div><img src="battery.png"></div>
+				</div> -->
+			</div>
+			<div id="screen1">
+				<div id="timep2"></div>
+				<div id="datep" style="color:black; font-size: 15pt; background: white"></div>
+				<div class="menus">
+					<img src="phoneicon.png" onclick="screen2show()">
+				</div>
+			</div>
+			<div id="screen2">
+				<img src="numberpad.png" onclick="screen3show()">
+			</div>
+			<div id="screen3">
+				<div id="numbers">
+					<div id="display_area">
+						<div id="account" style="display: none;">
+							<p>1. Account Information</p>
+							<p>2. Tariff plan Migration</p>
+						</div>
+						<div id="acctinfo" style="display: none;">
+							<p>1. My Number</p>
+							<p>2. My Tariff plan</p>
+							<p>3. My balance</p>
+							<p>0. Go back</p>
+						</div>
+						<div id="numberscreen" style="display: none;">
+							<p>09062701949</p>
+							<p>0. Go back</p>
+						</div>
+						<div id="tariffscreen" style="display: none;">
+							<p>Your tariff plan is <span id="rtariff"></span></p>
+							<p>0. Go back</p>
+						</div>
+					</div>
+					<div id="show_area"></div><div style="color: black; font-size: 20pt; display: inline-block;text-align: right; cursor: pointer;" onclick="back()">&#8656;</div>
+					<div id="number_area">
+						<br>
+						<button onclick="button(1)">1</button>
+						<button onclick="button(2)">2</button>
+						<button onclick="button(3)">3</button><br>
+						<button onclick="button(4)">4</button>
+						<button onclick="button(5)">5</button>
+						<button onclick="button(6)">6</button><br>
+						<button onclick="button(7)">7</button>
+						<button onclick="button(8)">8</button>
+						<button onclick="button(9)">9</button><br>
+						<button onclick="button('*')">*</button>
+						<button onclick="button(0)">0</button>
+						<button onclick="button('#')">#</button><br>
+						<button onclick="call()"><img src="phoneicon.png"></button>
+						<button><img src="endcall.png"></button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="btlink">
+			<a href="phone.html"><div id="homelink"></div></a>
+		</div>
+		
+	</div>
+</body>
+</html>
