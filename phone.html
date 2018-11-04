@@ -15,18 +15,11 @@
 		</div>
 		<div id="screen">
 			<div id="topbar">
-<!-- 				<div id="notification"></div> -->
 				<div id="timep1"></div>
-				<!-- <div id="status">
-					
-					<div><img src="wifi.png"></div>
-					<div><img src="signal.png"></div>
-					<div><img src="battery.png"></div>
-				</div> -->
 			</div>
 			<div id="screen1">
 				<div id="timep2"></div>
-				<div id="datep" style="color:black; font-size: 15pt; background: white"></div>
+				<div id="datep" style="color:black; font-size: 15pt; background: white; font-weight: bolder"></div>
 				<div class="menus">
 					<img src="phoneicon.png" onclick="screen2show()">
 				</div>
@@ -52,11 +45,25 @@
 							<p>0. Go back</p>
 						</div>
 						<div id="tariffscreen" style="display: none;">
-							<p>Your tariff plan is <span id="rtariff"></span></p>
+							<p>Your tariff plan is <span id="cctariff" style="color: black">MTN Mpulse</span></p>
+							<p>0. Go back</p>
+						</div>
+						<div id="tariffs" style="display: none;">
+							<p>1. MTN Pulse</p>
+							<p>2. MTN Zone</p>
+							<p>3. MTN XtraPro</p>
+							<p>0. Go back</p>
+						</div>
+						<div id="ctariff" style="display: none;">
+							<p>Your new tariff plan is <div id="ytariff">&nbsp;</div></p>
+							<p>0. Go back</p>
+						</div>
+						<div id="acctbalance" style="display: none;">
+							<p>Your <span id="btariff" style="color: black">MTN Mpulse</span> balance is #<span id="cbalance">0</span></p>
 							<p>0. Go back</p>
 						</div>
 					</div>
-					<div id="show_area"></div><div style="color: black; font-size: 20pt; display: inline-block;text-align: right; cursor: pointer;" onclick="back()">&#8656;</div>
+					<div id="show_area"></div><div style="color: green; font-size: 20pt; display: inline-block;text-align: right; cursor: pointer; -moz-user-select: none; user-select: none;" onclick="back()">&#8656;</div>
 					<div id="number_area">
 						<br>
 						<button onclick="button(1)">1</button>
@@ -72,7 +79,7 @@
 						<button onclick="button(0)">0</button>
 						<button onclick="button('#')">#</button><br>
 						<button onclick="call()"><img src="phoneicon.png"></button>
-						<button><img src="endcall.png"></button>
+						<button onclick="endcall()"><img src="endcall.png"></button>
 					</div>
 				</div>
 			</div>
@@ -82,5 +89,200 @@
 		</div>
 		
 	</div>
+	<div id="recharge">
+		<h1>RECHARGE VOUCHER</h1>
+		<input type="text" placeholder="Number of Vouchers to generate" id="vou">
+		<button onclick="generate()">GENERATE</button>
+		<div id="vouchers">
+			
+		</div>
+	</div>
+	<script type="text/javascript">
+	balance=0;
+	rtariff="";
+	var time=new Date();
+	d=time.getDate();
+	mo=time.getMonth();
+	y=time.getFullYear();
+	h=time.getHours();
+	m=time.getMinutes();
+	s=time.getSeconds();
+	function generate(){
+		document.getElementById('vouchers').innerHTML="";
+	for(i=1; i<=vou.value; i++){
+		var card=Math.floor(Math.random()*234145789875367+123456789012345)
+		document.getElementById('vouchers').innerHTML+=card + "<br><br>";
+	}
+	}
+	function ctime(){
+		document.querySelector('#timep1').innerHTML=h + " : " + m;
+		document.querySelector('#timep2').innerHTML=h + ":" + m;
+		document.querySelector('#datep').innerHTML=d + "-" + mo + "-" + y;
+		setTimeout(ctime, 1000);
+	}
+	function screen2show(){
+		document.querySelector('#screen1').style.display="none";
+		document.querySelector('#screen2').style.display="block";
+	}
+	function screen3show(){
+		document.querySelector('#screen1').style.display="none";
+		document.querySelector('#screen2').style.display="none";
+		document.querySelector('#screen3').style.display="block";
+		document.querySelector('#screen3').style.display="block";
+	}
+	function button(n){
+		document.querySelector('#show_area').innerHTML+=n;
+	}
+	function back(){
+		document.querySelector('#show_area').innerHTML=document.querySelector('#show_area').innerHTML.slice(0,-1);
+	}
+	function pro(){
+		return "processing...";
+
+	}
+	function call(){
+		document.getElementById('display_area').style.visibility="visible";
+		if(document.querySelector('#show_area').innerHTML=="*123#"){
+			// proc=setTimeout(pro, 1000)
+			// document.getElementById('display_area').innerHTML=pro();
+			// clearTimeout(proc)
+			document.getElementById('show_area').innerHTML="";
+			document.getElementById('account').style.display="inline-block";
+			account=true;
+		}
+		if(account==true && document.querySelector('#show_area').innerHTML=="1"){
+			document.getElementById('account').style.display="none";
+			document.getElementById('acctinfo').style.display="inline-block";
+			document.getElementById('show_area').innerHTML="";
+			acctinfo=true; account=false;
+		}
+		if(acctinfo==true && document.querySelector('#show_area').innerHTML=="0"){
+			document.getElementById('show_area').innerHTML="";
+			document.getElementById('account').style.display="inline-block";
+			document.getElementById('acctinfo').style.display="none";
+			account=true; numberscreen=false; acctinfo=false;
+		}
+		if(acctinfo==true && document.querySelector('#show_area').innerHTML=="1"){
+			document.getElementById('show_area').innerHTML="";
+			document.getElementById('acctinfo').style.display="none";
+			document.getElementById('numberscreen').style.display="inline-block";
+			numberscreen=true; acctinfo=false;
+		}
+		if(numberscreen==true && document.querySelector('#show_area').innerHTML=="0"){
+			acctinfo=true;
+			document.getElementById('acctinfo').style.display="inline-block";
+			document.getElementById('show_area').innerHTML="";
+			document.getElementById('numberscreen').style.display="none";
+			numberscreen=false;
+		}
+		if(acctinfo==true && document.querySelector('#show_area').innerHTML=="2"){
+			document.getElementById('show_area').innerHTML="";
+			document.getElementById('acctinfo').style.display="none";
+			document.getElementById('tariffscreen').style.display="inline-block";
+			tariffscreen=true;
+			numberscreen=false; acctinfo=false;
+		}
+		if(tariffscreen==true && document.querySelector('#show_area').innerHTML=="0"){
+			document.getElementById('acctinfo').style.display="inline-block";
+			document.getElementById('show_area').innerHTML="";
+			document.getElementById('tariffscreen').style.display="none";
+			acctinfo=true;
+			tariffscreen=false;
+		}
+		if(account==true && document.querySelector('#show_area').innerHTML=="2"){
+			document.getElementById('account').style.display="none";
+			document.getElementById('show_area').innerHTML="";
+			document.getElementById('tariffs').style.display="inline-block";
+			tariffs=true;
+			account=tariffscreen=numberscreen=acctinfo=false;
+		}
+		if(tariffs==true && document.querySelector('#show_area').innerHTML=="1"){
+			if(confirm("Are you sure you want to migrate from your current plan?")){
+			rtariff="MTN Pulse";
+			cctariff.innerHTML="MTN Pulse";
+			document.getElementById('account').style.display="none";
+			document.getElementById('show_area').innerHTML="";
+			document.getElementById('tariffs').style.display="none";
+			document.getElementById('ctariff').style.display="inline-block";
+			document.getElementById('ytariff').innerHTML=rtariff;
+			ctariff=true;
+			tariffs=false;
+			account=tariffscreen=numberscreen=acctinfo=false;
+		}
+		}
+		if(tariffs==true && document.querySelector('#show_area').innerHTML=="2"){
+			if(confirm("Are you sure you want to migrate from your current plan?")){
+			rtariff="MTN Zone";
+			cctariff.innerHTML="MTN Zone";
+			document.getElementById('account').style.display="none";
+			document.getElementById('show_area').innerHTML="";
+			document.getElementById('tariffs').style.display="none";
+			document.getElementById('ctariff').style.display="inline-block";
+			document.getElementById('ytariff').innerHTML=rtariff;
+			ctariff=true;
+			tariffs=false;
+			account=tariffscreen=numberscreen=acctinfo=false;
+		}
+		}
+		if(tariffs==true && document.querySelector('#show_area').innerHTML=="3"){
+			if(confirm("Are you sure you want to migrate from your current plan?")){
+			rtariff="MTN XtraPro";
+			cctariff.innerHTML="MTN XtraPro";
+			document.getElementById('account').style.display="none";
+			document.getElementById('show_area').innerHTML="";
+			document.getElementById('tariffs').style.display="none";
+			document.getElementById('ctariff').style.display="inline-block";
+			document.getElementById('ytariff').innerHTML=rtariff;
+			ctariff=true;
+			tariffs=false;
+			account=tariffscreen=numberscreen=acctinfo=false;
+		}
+		}
+		if(tariffs==true && document.querySelector('#show_area').innerHTML=="0"){
+			document.getElementById('account').style.display="inline-block";
+			document.getElementById('show_area').innerHTML="";
+			document.getElementById('tariffs').style.display="none";
+			tariffs=false;
+			account=true;
+			tariffscreen=numberscreen=acctinfo=false;
+		}
+		if(ctariff==true && document.querySelector('#show_area').innerHTML=="0"){
+			document.getElementById('ctariff').style.display="none";
+			document.getElementById('tariffs').style.display="inline-block";
+			document.getElementById('show_area').innerHTML="";
+			ctariff=false;
+			tariffs=true;
+			account=tariffscreen=numberscreen=acctinfo=false;
+		}
+		if(acctinfo==true && document.querySelector('#show_area').innerHTML=="3"){
+			document.getElementById('acctbalance').style.display="inline-block";
+			document.getElementById('acctinfo').style.display="none";
+			document.getElementById('show_area').innerHTML="";
+			document.getElementById('cbalance').innerHTML=balance;
+			document.getElementById('btariff').innerHTML=rtariff;
+			acctbalance=true;
+			ctariff=tariffs=account=tariffscreen=numberscreen=acctinfo=false;
+		}
+		if(acctbalance==true && document.querySelector('#show_area').innerHTML=="0"){
+			document.getElementById('show_area').innerHTML="";
+			document.getElementById('acctbalance').style.display="none";
+			document.getElementById('acctinfo').style.display="inline-block";
+			acctinfo=true;
+			ctariff=tariffs=account=tariffscreen=numberscreen=acctbalance=false;
+		}
+		if(document.querySelector('#show_area').innerHTML=="*556#"){
+			document.getElementById('acctbalance').style.display="inline-block";
+			document.querySelector('#show_area').innerHTML="";
+		}
+	}
+	function endcall(){
+		document.getElementById('account').style.display="none";
+		document.getElementById('acctinfo').style.display="none";
+		document.getElementById('numberscreen').style.display="none";
+		document.getElementById('tariffscreen').style.display="none";
+		document.getElementById('tariffs').style.display="none";
+		document.getElementById('acctbalance').style.display="none";
+	}
+</script>
 </body>
 </html>
