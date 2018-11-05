@@ -1,8 +1,10 @@
 body{
 	font-family: segoe UI;
+	background-color: lightgreen;
 }
 #phone{
 	height: 600px;
+	margin-left: 150px;
 	width: 22%;
 	background-color: black;
 	border-radius: 5px;
@@ -36,7 +38,7 @@ body{
 }
 #screen{
 	height: 535px;
-	background: url(b1.jpg);
+	background: url(b2.jpg);
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-color: green;
@@ -98,7 +100,7 @@ body{
 	background: lightgrey;
 }
 #screen2{
-	background: lightgreen;
+	background: url(b2.jpg);
 	height: 100%;
 	display: none;
 }
@@ -126,7 +128,7 @@ body{
 }
 #number_area{
 	height: 250px;
-	background: lightgreen;
+	background: url(b2.jpg);
 	border-top: 2px solid lightblue;
 }
 #display_area{
@@ -166,6 +168,7 @@ button:hover{
 	text-align: center;
 	width: 30%;
 	float: right;
+	margin-right: 150px;
 	margin-top: -44.5%;
 	background: green;
 }
