@@ -68,6 +68,10 @@
 						<div id="rechargefail" style="display: none;">
 							<p>You entered incorrect PIN</p>
 						</div>
+						<div id="callarea" style="display: none;">
+							<p>calling...</p>
+							<p id="callreader"><span id="minc">0</span> : <span id="secc">0</span></p>
+						</div>
 					</div>
 					<div id="show_area"></div><div style="color: green; font-size: 20pt; display: inline-block;text-align: right; cursor: pointer; -moz-user-select: none; user-select: none;" onclick="back()">&#8656;</div>
 					<div id="number_area">
@@ -84,7 +88,7 @@
 						<button onclick="button('*')">*</button>
 						<button onclick="button(0)">0</button>
 						<button onclick="button('#')">#</button><br>
-						<button onclick="call()"><img src="phoneicon.png"></button>
+						<button onclick="call();calling()"><img src="phoneicon.png"></button>
 						<button onclick="endcall()"><img src="endcall.png"></button>
 					</div>
 				</div>
@@ -105,17 +109,22 @@
 	</div>
 <script type="text/javascript">
 	balance=0;
-	rtariff="";
-	var time=new Date();
-	d=time.getDate();
-	mo=time.getMonth();
-	y=time.getFullYear();
-	h=time.getHours();
-	m=time.getMinutes();
-	s=time.getSeconds();
+	rtariff="MTN Mpulse";
 	vous=[];
 	i="";
 	screen3=false;
+	home=true;
+	cal = setTimeout(callcount, 1000);
+	function exh(){
+		var exh = new Audio();
+		exh.src="exh.mp3";
+		exh.play();
+	}
+	function minr(){
+		var minr = new Audio();
+		minr.src="minr.mp3";
+		minr.play();
+	}
 	function generate(){
 		document.getElementById('vouchers').innerHTML="";
 		for(i=1; i<=vou.value; i++){
@@ -127,6 +136,22 @@
 	
 	}
 	function ctime(){
+	var time=new Date();
+	d=time.getDate();
+	mo=time.getMonth();
+	y=time.getFullYear();
+	h=time.getHours();
+	m=time.getMinutes();
+	s=time.getSeconds();
+	if(h<9){
+		h="0"+h;
+	}
+	if(m<9){
+		m="0"+m;
+	}
+	if(s<9){
+		s="0"+s;
+	}
 		document.querySelector('#timep1').innerHTML=h + " : " + m;
 		document.querySelector('#timep2').innerHTML=h + ":" + m;
 		document.querySelector('#datep').innerHTML=d + "-" + (mo+1) + "-" + y;
@@ -152,32 +177,110 @@
 		return "processing...";
 	}
 	function call(){
-		document.getElementById('display_area').style.visibility="visible";
-		if(document.querySelector('#show_area').innerHTML=="*123#"){
+		function callcount(){
+			if(rtariff=="MTN Mpulse"){
+			secc.innerHTML++;
+			if(secc.innerHTML==60){
+				minc.innerHTML++;
+				secc.innerHTML=0;
+			}
+			balance=balance-1;
+			cal = setTimeout(callcount, 1000);
+			if(balance<1){
+				clearTimeout(cal);
+				exh();
+			}
+			if(balance==60){
+				minr();
+			}
+			}
+			if(rtariff=="MTN Zone"){
+			secc.innerHTML++;
+			if(secc.innerHTML==60){
+				minc.innerHTML++;
+				secc.innerHTML=0;
+			}
+			balance=balance-2;
+			cal = setTimeout(callcount, 1000);
+			if(balance<1){
+				clearTimeout(cal);
+				exh();
+			}
+			if(balance==120){
+				minr();
+			}
+			}
+			if(rtariff=="MTN Pulse"){
+			secc.innerHTML++;
+			if(secc.innerHTML==60){
+				minc.innerHTML++;
+				secc.innerHTML=0;
+			}
+			balance=balance-5;
+			cal = setTimeout(callcount, 1000);
+			if(balance<1){
+				clearTimeout(cal);
+				exh();
+			}
+			if(balance==300){
+				minr();
+			}
+			}
+			if(rtariff=="MTN XtraPro"){
+			secc.innerHTML++;
+			if(secc.innerHTML==60){
+				minc.innerHTML++;
+				secc.innerHTML=0;
+			}
+			balance=balance-10;
+			cal = setTimeout(callcount, 1000);
+			if(balance<1){
+				clearTimeout(cal);
+				exh();
+			}
+			if(balance==600){
+				minr();
+			}
+			}
+		}
+		if(document.getElementById('show_area').innerHTML.length==11){
+			if(balance>0){
+			document.getElementById('show_area').innerHTML="";
+			document.getElementById('callarea').style.display="inline-block";
+			callcount();
+			}
+			home=false;
+		}
+		if(document.querySelector('#show_area').innerHTML=="*123#" && home==true){
 			// proc=setTimeout(pro, 1000)
 			// document.getElementById('display_area').innerHTML=pro();
 			// clearTimeout(proc)
 			document.getElementById('show_area').innerHTML="";
 			document.getElementById('account').style.display="inline-block";
 			account=true;
+			acctinfo=false;
+			home=false;
 		}
 		if(account==true && document.querySelector('#show_area').innerHTML=="1"){
 			document.getElementById('account').style.display="none";
 			document.getElementById('acctinfo').style.display="inline-block";
 			document.getElementById('show_area').innerHTML="";
 			acctinfo=true; account=false;
+			home=false;
 		}
 		if(acctinfo==true && document.querySelector('#show_area').innerHTML=="0"){
 			document.getElementById('show_area').innerHTML="";
 			document.getElementById('account').style.display="inline-block";
 			document.getElementById('acctinfo').style.display="none";
 			account=true; numberscreen=false; acctinfo=false;
+			home=false;
 		}
 		if(acctinfo==true && document.querySelector('#show_area').innerHTML=="1"){
 			document.getElementById('show_area').innerHTML="";
 			document.getElementById('acctinfo').style.display="none";
 			document.getElementById('numberscreen').style.display="inline-block";
 			numberscreen=true; acctinfo=false;
+			home=false;
 		}
 		if(numberscreen==true && document.querySelector('#show_area').innerHTML=="0"){
 			acctinfo=true;
@@ -185,6 +288,7 @@
 			document.getElementById('show_area').innerHTML="";
 			document.getElementById('numberscreen').style.display="none";
 			numberscreen=false;
+			home=false;
 		}
 		if(acctinfo==true && document.querySelector('#show_area').innerHTML=="2"){
 			document.getElementById('show_area').innerHTML="";
@@ -192,6 +296,7 @@
 			document.getElementById('tariffscreen').style.display="inline-block";
 			tariffscreen=true;
 			numberscreen=false; acctinfo=false;
+			home=false;
 		}
 		if(tariffscreen==true && document.querySelector('#show_area').innerHTML=="0"){
 			document.getElementById('acctinfo').style.display="inline-block";
@@ -199,12 +304,14 @@
 			document.getElementById('tariffscreen').style.display="none";
 			acctinfo=true;
 			tariffscreen=false;
+			home=false;
 		}
 		if(account==true && document.querySelector('#show_area').innerHTML=="2"){
 			document.getElementById('account').style.display="none";
 			document.getElementById('show_area').innerHTML="";
 			document.getElementById('tariffs').style.display="inline-block";
 			tariffs=true;
+			home=false;
 			account=tariffscreen=numberscreen=acctinfo=false;
 		}
 		if(tariffs==true && document.querySelector('#show_area').innerHTML=="1"){
@@ -218,6 +325,7 @@
 			document.getElementById('ytariff').innerHTML=rtariff;
 			ctariff=true;
 			tariffs=false;
+			home=false;
 			account=tariffscreen=numberscreen=acctinfo=false;
 		}
 		}
@@ -232,6 +340,7 @@
 			document.getElementById('ytariff').innerHTML=rtariff;
 			ctariff=true;
 			tariffs=false;
+			home=false;
 			account=tariffscreen=numberscreen=acctinfo=false;
 		}
 		}
@@ -245,6 +354,7 @@
 			document.getElementById('ctariff').style.display="inline-block";
 			document.getElementById('ytariff').innerHTML=rtariff;
 			ctariff=true;
+			home=false;
 			tariffs=false;
 			account=tariffscreen=numberscreen=acctinfo=false;
 		}
@@ -255,6 +365,7 @@
 			document.getElementById('tariffs').style.display="none";
 			tariffs=false;
 			account=true;
+			home=false;
 			tariffscreen=numberscreen=acctinfo=false;
 		}
 		if(ctariff==true && document.querySelector('#show_area').innerHTML=="0"){
@@ -263,6 +374,7 @@
 			document.getElementById('show_area').innerHTML="";
 			ctariff=false;
 			tariffs=true;
+			home=false;
 			account=tariffscreen=numberscreen=acctinfo=false;
 		}
 		if(acctinfo==true && document.querySelector('#show_area').innerHTML=="3"){
@@ -273,6 +385,7 @@
 			document.getElementById('btariff').innerHTML=rtariff;
 			document.getElementById('bib').style.visibility="visible";
 			acctbalance=true;
+			home=false;
 			ctariff=tariffs=account=tariffscreen=numberscreen=acctinfo=false;
 		}
 		if(acctbalance==true && document.querySelector('#show_area').innerHTML=="0"){
@@ -282,11 +395,13 @@
 			acctinfo=true;
 			ctariff=tariffs=account=tariffscreen=numberscreen=acctbalance=false;
 		}
-		if(document.querySelector('#show_area').innerHTML=="*556#"){
+		if(document.querySelector('#show_area').innerHTML=="*556#" && home==true){
 			document.getElementById('acctbalance').style.display="inline-block";
 			document.getElementById('cbalance').innerHTML=balance;
+			document.getElementById('btariff').innerHTML=rtariff;
 			document.querySelector('#show_area').innerHTML="";
 			document.getElementById('bib').style.visibility="hidden";
+			// home=false;
 		}
 		
 		if(document.querySelector('#show_area').innerHTML==("*555*"+document.querySelector('#nnn').innerHTML+"#")){
@@ -294,18 +409,25 @@
 			document.getElementById('rechargesuccess').style.display="inline-block";
 			balance+=200;
 		}
-		
+	
 	}
 	function endcall(){
+		home=true;
+		minc.innerHTML=0;
+		secc.innerHTML=0;
 		document.getElementById('account').style.display="none";
 		document.getElementById('acctinfo').style.display="none";
 		document.getElementById('numberscreen').style.display="none";
 		document.getElementById('tariffscreen').style.display="none";
 		document.getElementById('tariffs').style.display="none";
+		document.getElementById('ctariff').style.display="none";
 		document.getElementById('acctbalance').style.display="none";
 		document.getElementById('rechargesuccess').style.display="none";
+		document.getElementById('callarea').style.display="none";
 		document.getElementById('rechargefail').style.display="none";
 		document.querySelector('#show_area').innerHTML="";
+		clearTimeout(cal);
+		
 	}
 	function home(){
 		document.getElementById('screen3').style.display="none";
