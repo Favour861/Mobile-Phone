@@ -66,7 +66,7 @@
 							<p>Your account recharge of #200 was successful</p>
 						</div>
 						<div id="rechargefail" style="display: none;">
-							<p>You entered incorrect PIN</p>
+							<p>This card has already been used<br>by you</p>
 						</div>
 						<div id="callarea" style="display: none;">
 							<p>calling...</p>
@@ -95,35 +95,37 @@
 			</div>
 		</div>
 		<div id="btlink">
-			<div id="homelink" onclick="home()"></div>
+			<div id="homelink" onclick="homepage()"></div>
 		</div>
 		
 	</div>
 	<div id="recharge">
 		<h1>RECHARGE VOUCHER</h1>
-		<input type="text" placeholder="Number of Vouchers to generate" id="vou">
+		<input type="hidden" placeholder="Number of Vouchers to generate" id="vou" value="1">
 		<button onclick="generate()">GENERATE</button>
 		<div id="vouchers">
 			
 		</div>
 	</div>
 <script type="text/javascript">
+	var callcount;
 	balance=0;
 	rtariff="MTN Mpulse";
 	vous=[];
 	i="";
 	screen3=false;
+	loaded="";
 	home=true;
 	cal = setTimeout(callcount, 1000);
 	function exh(){
-		var exh = new Audio();
-		exh.src="exh.mp3";
-		exh.play();
+		var exhs = new Audio();
+		exhs.src="exh.mp3";
+		exhs.play();
 	}
 	function minr(){
-		var minr = new Audio();
-		minr.src="minr.mp3";
-		minr.play();
+		var minrs = new Audio();
+		minrs.src="minr.mp3";
+		minrs.play();
 	}
 	function generate(){
 		document.getElementById('vouchers').innerHTML="";
@@ -173,9 +175,10 @@
 	function back(){
 		document.querySelector('#show_area').innerHTML=document.querySelector('#show_area').innerHTML.slice(0,-1);
 	}
-	function pro(){
-		return "processing...";
-	}
+	// function pro(){
+	// 	return "processing...";
+	// 	setInterval(pro,2000);
+	// }
 	function call(){
 		function callcount(){
 			if(rtariff=="MTN Mpulse"){
@@ -247,8 +250,8 @@
 			if(balance>0){
 			document.getElementById('show_area').innerHTML="";
 			document.getElementById('callarea').style.display="inline-block";
-			callcount();
 			}
+			callcount();
 			home=false;
 		}
 		if(document.querySelector('#show_area').innerHTML=="*123#" && home==true){
@@ -403,18 +406,26 @@
 			document.getElementById('bib').style.visibility="hidden";
 			// home=false;
 		}
-		
+
 		if(document.querySelector('#show_area').innerHTML==("*555*"+document.querySelector('#nnn').innerHTML+"#")){
+		if(document.querySelector('#show_area').innerHTML==("*555*"+loaded+"#")){
+			balance-=200;
+			document.querySelector('#show_area').innerHTML="";
+			document.getElementById('rechargesuccess').style.display="none";
+			document.getElementById('rechargefail').style.display="inline-block";
+		}
 			document.querySelector('#show_area').innerHTML="";
 			document.getElementById('rechargesuccess').style.display="inline-block";
 			balance+=200;
+			loaded=document.querySelector('#nnn').innerHTML;
 		}
 	
 	}
 	function endcall(){
-		home=true;
+		document.querySelector('#show_area').innerHTML="";
 		minc.innerHTML=0;
 		secc.innerHTML=0;
+		clearTimeout(cal);
 		document.getElementById('account').style.display="none";
 		document.getElementById('acctinfo').style.display="none";
 		document.getElementById('numberscreen').style.display="none";
@@ -425,11 +436,12 @@
 		document.getElementById('rechargesuccess').style.display="none";
 		document.getElementById('callarea').style.display="none";
 		document.getElementById('rechargefail').style.display="none";
-		document.querySelector('#show_area').innerHTML="";
-		clearTimeout(cal);
+		home=true;
+		// minr.pause();
+		// exh.pause();
 		
 	}
-	function home(){
+	function homepage(){
 		document.getElementById('screen3').style.display="none";
 		document.getElementById('screen2').style.display="none";
 		document.getElementById('screen1').style.display="block";
